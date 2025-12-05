@@ -220,35 +220,43 @@ export default function Home() {
           <div className="mt-16 max-w-4xl mx-auto px-4">
             <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[400px]">
               {/* Large left image */}
-              <div className="showcase-card opacity-0 col-span-2 row-span-2 rounded-3xl overflow-hidden shadow-2xl group">
-                <img
+              <div className="showcase-card opacity-0 col-span-2 row-span-2 rounded-3xl overflow-hidden shadow-2xl group relative">
+                <Image
                   src="/showcase/img1.png"
                   alt="3D Pixar Character"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               {/* Top right */}
-              <div className="showcase-card opacity-0 col-span-1 row-span-1 rounded-2xl overflow-hidden shadow-xl group">
-                <img
+              <div className="showcase-card opacity-0 col-span-1 row-span-1 rounded-2xl overflow-hidden shadow-xl group relative">
+                <Image
                   src="/showcase/img2.png"
                   alt="3D Pixar Character"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               {/* Top far right */}
-              <div className="showcase-card opacity-0 col-span-1 row-span-1 rounded-2xl overflow-hidden shadow-xl group">
-                <img
+              <div className="showcase-card opacity-0 col-span-1 row-span-1 rounded-2xl overflow-hidden shadow-xl group relative">
+                <Image
                   src="/showcase/img3.png"
                   alt="3D Pixar Character"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               {/* Bottom right wide */}
-              <div className="showcase-card opacity-0 col-span-2 row-span-1 rounded-2xl overflow-hidden shadow-xl group">
-                <img
+              <div className="showcase-card opacity-0 col-span-2 row-span-1 rounded-2xl overflow-hidden shadow-xl group relative">
+                <Image
                   src="/showcase/img4.png"
                   alt="3D Pixar Character"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
             </div>
