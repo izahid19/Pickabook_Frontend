@@ -8,6 +8,7 @@ import Link from 'next/link';
 import ThemeToggle from '../../components/ThemeToggle';
 import LoadingAnimation from '../../components/LoadingAnimation';
 import gsap from 'gsap';
+import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
   const { user, loading, logout } = useAuth();
@@ -55,6 +56,7 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     logout();
+    toast.success('Logged out successfully');
     router.push('/');
   };
 

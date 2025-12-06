@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import { Download, RefreshCcw, Sparkles, ArrowRight } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Download, RefreshCcw, Sparkles, ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '../lib/utils';
 import gsap from 'gsap';
@@ -15,8 +15,10 @@ interface ResultDisplayProps {
 export default function ResultDisplay({ originalImage, generatedImage, onReset }: ResultDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  const [isDownloaded, setIsDownloaded] = useState(false);
 
   useEffect(() => {
+    setIsDownloaded(false);
     const tl = gsap.timeline();
 
     tl.fromTo(containerRef.current,
@@ -34,7 +36,7 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
       "-=0.2"
     );
 
-  }, []);
+  }, [generatedImage]);
 
   const handleDownload = async () => {
     try {
@@ -48,6 +50,7 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
       link.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(link);
+      setIsDownloaded(true);
     } catch (error) {
       console.error('Download failed:', error);
       // Fallback method
@@ -58,6 +61,7 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      setIsDownloaded(true);
     }
   };
 
@@ -128,10 +132,25 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
         
         <button
           onClick={handleDownload}
-          className="action-btn group flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-slate-900 dark:bg-orange-500 text-white font-semibold shadow-lg shadow-slate-900/20 dark:shadow-orange-500/20 hover:shadow-xl hover:shadow-slate-900/30 dark:hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-300"
+          disabled={isDownloaded}
+          className={cn(
+            "action-btn group flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform",
+            isDownloaded 
+              ? "bg-green-500 text-white cursor-not-allowed shadow-green-500/20"
+              : "bg-slate-900 dark:bg-orange-500 text-white shadow-slate-900/20 dark:shadow-orange-500/20 hover:shadow-xl hover:shadow-slate-900/30 dark:hover:shadow-orange-500/30 hover:-translate-y-0.5"
+          )}
         >
-          <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform duration-300" />
-          <span>Download Masterpiece</span>
+          {isDownloaded ? (
+            <>
+              <Check className="w-5 h-5" />
+              <span>Downloaded</span>
+            </>
+          ) : (
+            <>
+              <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform duration-300" />
+              <span>Download Masterpiece</span>
+            </>
+          )}
         </button>
       </div>
     </div>
