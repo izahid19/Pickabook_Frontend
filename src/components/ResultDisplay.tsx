@@ -36,13 +36,29 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
 
   }, []);
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = generatedImage;
-    link.download = 'pickabook-magic-3d.png';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(generatedImage);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'pickabook-magic-3d.png';
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Download failed:', error);
+      // Fallback method
+      const link = document.createElement('a');
+      link.href = generatedImage;
+      link.download = 'pickabook-magic-3d.png';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
@@ -58,9 +74,9 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
       <div ref={imageContainerRef} className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
         {/* Original Image */}
         <div className="image-card relative group w-full max-w-[400px] flex-1">
-          <div className="absolute -inset-0.5 bg-gradient-to-tr from-slate-200 to-slate-300 rounded-[2rem] blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+          <div className="absolute -inset-0.5 bg-linear-to-tr from-slate-200 to-slate-300 rounded-4xl blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
           <div className="relative bg-white p-2 rounded-[1.75rem] shadow-xl ring-1 ring-slate-100">
-            <div className="aspect-[3/4] relative rounded-2xl overflow-hidden">
+            <div className="aspect-3/4 relative rounded-2xl overflow-hidden">
               <Image 
                 src={originalImage} 
                 alt="Original" 
@@ -83,16 +99,16 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
 
         {/* Generated Image */}
         <div className="image-card relative group w-full max-w-[400px] flex-1">
-          <div className="absolute -inset-1 bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 rounded-[2rem] blur opacity-40 group-hover:opacity-100 transition duration-1000 animate-pulse"></div>
+          <div className="absolute -inset-1 bg-linear-to-tr from-indigo-500 via-purple-500 to-pink-500 rounded-4xl blur opacity-40 group-hover:opacity-100 transition duration-1000 animate-pulse"></div>
           <div className="relative bg-white p-2 rounded-[1.75rem] shadow-2xl ring-1 ring-slate-100/50">
-            <div className="aspect-[3/4] relative rounded-2xl overflow-hidden">
+            <div className="aspect-3/4 relative rounded-2xl overflow-hidden">
               <Image 
                 src={generatedImage} 
                 alt="Magic 3D Result" 
                 fill 
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute top-4 left-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-1 ring-white/20">
+              <div className="absolute top-4 left-4 bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-1 ring-white/20">
                 ✨ 3D MAGIC
               </div>
             </div>
@@ -104,7 +120,7 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
       <div className="flex flex-col sm:flex-row justify-center gap-4 mt-16 pb-12">
         <button
           onClick={onReset}
-          className="action-btn group flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-slate-600 font-semibold shadow-lg shadow-slate-200/50 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 border border-slate-100"
+          className="action-btn group flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-gray-200 font-semibold shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 border border-slate-100 dark:border-slate-700"
         >
           <RefreshCcw className="w-5 h-5 group-hover:-rotate-180 transition-transform duration-500" />
           <span>Transform Another</span>
@@ -112,7 +128,7 @@ export default function ResultDisplay({ originalImage, generatedImage, onReset }
         
         <button
           onClick={handleDownload}
-          className="action-btn group flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-slate-900 text-white font-semibold shadow-lg shadow-slate-900/20 hover:shadow-xl hover:shadow-slate-900/30 hover:-translate-y-0.5 transition-all duration-300"
+          className="action-btn group flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-slate-900 dark:bg-orange-500 text-white font-semibold shadow-lg shadow-slate-900/20 dark:shadow-orange-500/20 hover:shadow-xl hover:shadow-slate-900/30 dark:hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-300"
         >
           <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform duration-300" />
           <span>Download Masterpiece</span>
